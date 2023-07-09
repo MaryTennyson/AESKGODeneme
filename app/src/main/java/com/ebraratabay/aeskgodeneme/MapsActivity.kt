@@ -7,6 +7,7 @@ import android.location.LocationListener
 import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -23,7 +24,7 @@ import com.ebraratabay.aeskgodeneme.databinding.ActivityMapsBinding
 import com.google.android.material.snackbar.Snackbar
 import java.util.prefs.AbstractPreferences
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
+class MapsActivity : AppCompatActivity(), OnMapReadyCallback,GoogleMap.OnMapLongClickListener {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
@@ -32,6 +33,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var permissionLauncher: ActivityResultLauncher<String>
     private  lateinit var sharedPreferences: SharedPreferences
     private var trackBoolean: Boolean? = null
+    private var selectedLatitude: Double? =null
+    private var selectedLongitude: Double? =null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
        sharedPreferences= this.getSharedPreferences("com.ebraratabay.aeskgodeneme", MODE_PRIVATE)
@@ -39,6 +42,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         setContentView(binding.root)
     registerLauncher()
         trackBoolean=false
+        selectedLatitude=0.0
+        selectedLongitude= 0.0
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
@@ -56,6 +61,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
      */
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+        mMap.setOnMapLongClickListener(this)
         locationManager= this.getSystemService(LOCATION_SERVICE) as LocationManager// as LocationManager
 
         locationListener= object: LocationListener {
@@ -110,5 +116,19 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
      }
 
  }
+    }
+
+    override fun onMapLongClick(p0: LatLng) {
+        mMap.clear()
+        mMap.addMarker(MarkerOptions().position(p0))
+        selectedLatitude=p0.latitude
+        selectedLongitude= p0.longitude
+    }
+
+    fun onDeleteButtonClicked(view:View){
+
+    }
+    fun onSaveButtonClicked(view:View){
+
     }
 }
