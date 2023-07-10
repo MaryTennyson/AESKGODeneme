@@ -21,6 +21,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.ebraratabay.aeskgodeneme.databinding.ActivityMapsBinding
+import com.ebraratabay.aeskgodeneme.model.Place
 import com.google.android.material.snackbar.Snackbar
 import java.util.prefs.AbstractPreferences
 
@@ -50,15 +51,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,GoogleMap.OnMapLong
         mapFragment.getMapAsync(this)
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
+
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         mMap.setOnMapLongClickListener(this)
@@ -108,7 +101,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,GoogleMap.OnMapLong
     private fun registerLauncher(){
      permissionLauncher= registerForActivityResult(ActivityResultContracts.RequestPermission()){
      result-> if(result){
-         if(ContextCompat.checkSelfPermission(this,android.Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED)
+          if(ContextCompat.checkSelfPermission(this,android.Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED)
          locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,1000,10f,locationListener)
 
      }else{
@@ -129,6 +122,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,GoogleMap.OnMapLong
 
     }
     fun onSaveButtonClicked(view:View){
-
+     // val place=Place()
     }
 }
