@@ -11,14 +11,14 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        map:layout_constraintBottom_toTopOf="@+id/editTextTextPersonName"
+        map:layout_constraintBottom_toTopOf="@+id/placeText"
         map:layout_constraintEnd_toEndOf="parent"
         map:layout_constraintStart_toStartOf="parent"
         map:layout_constraintTop_toTopOf="parent"
-        tools:context=".MapsActivity" />
+        tools:context=".view.MapsActivity" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
+        android:id="@+id/placeText"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:ems="10"
@@ -42,7 +42,7 @@
         map:layout_constraintEnd_toEndOf="parent"
         map:layout_constraintHorizontal_bias="0.0"
         map:layout_constraintStart_toStartOf="parent"
-        map:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
+        map:layout_constraintTop_toBottomOf="@+id/placeText" />
 
     <Button
         android:id="@+id/deletebutton"

@@ -15,7 +15,7 @@
         android:theme="@style/Theme.AESKGODeneme"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".view.MainActivity"
             android:exported="true">
         <intent-filter>
         <action android:name="android.intent.action.MAIN" />
@@ -26,10 +26,10 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAgO9Viz91WLlBZYXjYK9oayTs6NwtVxlU" />
+            android:value="AIzaSyDUZ5G4B4BPIwYv6uc0Rm-S-OIX8ubwiCo" />
 
         <activity
-            android:name=".MapsActivity"
+            android:name=".view.MapsActivity"
         >
 
         </activity>
