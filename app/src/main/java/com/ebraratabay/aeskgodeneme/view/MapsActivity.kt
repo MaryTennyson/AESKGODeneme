@@ -48,7 +48,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,GoogleMap.OnMapLong
     private lateinit var db: PlaceDatabase
     private lateinit var placeDao: PlaceDao
     val compositeDisposable= CompositeDisposable()
-
+    var placeFromMain: Place? =null
+   //var isNew: Boolean= false
+  //  var buttonName: String= "Save"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,6 +72,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,GoogleMap.OnMapLong
          // .allowMainThreadQueries()
           .build()
         placeDao=db.placeDao()
+
+        binding.savebutton!!.isEnabled= false
+
     }
 
 
@@ -79,10 +84,15 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,GoogleMap.OnMapLong
 
         val intent= intent
         val info= intent.getStringExtra("info")
+
+
         if(info=="new"){
+           // isNew= true
 
+           // buttonName= if(isNew) "Delete" else "Save"
+            binding.savebutton!!.visibility= View.VISIBLE
+            binding.deletebutton!!.visibility=View.GONE
 
-        }else{
             locationManager= this.getSystemService(LOCATION_SERVICE) as LocationManager// as LocationManager
 
             locationListener= object: LocationListener {
@@ -115,9 +125,23 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,GoogleMap.OnMapLong
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastUserLocation,15f))
 
                 }
-        }
+            }
 
-            mMap.isMyLocationEnabled=true
+
+          //  mMap.isMyLocationEnabled=true
+        }else{
+            mMap.clear()
+            placeFromMain= intent.getSerializableExtra("selectedPlace") as?  Place
+            placeFromMain?.let {
+                val latlng=LatLng(it.latitude,it.longitude)
+                mMap.addMarker(MarkerOptions().position(latlng).title(it.name))
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng,15f))
+                binding.placeText?.setText(it.name)
+                binding.savebutton?.visibility = View.VISIBLE
+
+
+            }
+
         }
 
 
@@ -146,9 +170,16 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,GoogleMap.OnMapLong
         mMap.addMarker(MarkerOptions().position(p0))
         selectedLatitude=p0.latitude
         selectedLongitude= p0.longitude
+        binding.savebutton!!.isEnabled=true
     }
 
     fun onDeleteButtonClicked(view:View){
+        placeFromMain?.let{
+            compositeDisposable.add(
+                placeDao.delete(it).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(this::handleResponse)
+            )
+        }
+
 
     }
     fun onSaveButtonClicked(view:View){
@@ -175,4 +206,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,GoogleMap.OnMapLong
         super.onDestroy()
         compositeDisposable.clear() //büyük projelerde kullanılabilir
     }
+
+
 }
